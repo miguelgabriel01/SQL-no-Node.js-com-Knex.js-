@@ -1,7 +1,9 @@
 const express = require('express');//importa o modulo express
+const routes = require('./routes');//importa o arquivo de rotas para o servidor
+
 const app = express();
 
- 
+ app.use(routes);//a aplicação usa agora o arquivo de rotas
 
 const PORT = 3333;//constante onde informamos qual porta a apliacação usará
 app.listen(PORT, () => {

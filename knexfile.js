@@ -3,22 +3,18 @@
 module.exports = {
 
   development: {
-    client: 'pg',
+    client: 'pg',//informo o tipo de banco
     connection: {
-      database:"knex_test",
-      user:"postgres",
-      password:"miguelgabriel123"
+      database:"knex_test",//nome do banco
+      user:"postgres",//uduario responsavel pelo banco
+      password:"miguelgabriel123"//senha
     },
     migrations:{
       tableName: "knex_migrations",
-      directory: `${__dirname}/src/database/migrations`
+      directory: `${__dirname}/src/database/migrations`//informo onde quero que os arquivos de migrations sejam instalados
     },
     seeds:{
-      directory: `${__dirname}/src/database/seeds`
-
+      directory: `${__dirname}/src/database/seeds`//informo onde os arquivos de seed sejam instalados
     }
-
   }
-
-
-  }
+}
