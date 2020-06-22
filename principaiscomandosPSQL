@@ -1,0 +1,30 @@
+# PRINCIPAIS COMANDOS POSTGREsql #
+
+iniciar servidor:
+  sudo -i -u postgres
+  psql
+
+sair/volar:
+  \q
+
+
+CREATE TABLE users(
+    id serial unique,
+    name text not null
+);
+
+INSERT INTO users (name) values ('Miguel');
+
+SELECT * FROM users;
+
+UPDATE users SET name= 'Miguel gabriel' WHERE id='1';
+
+CREATE TABLE projects (
+    id serial unique,
+    user_id integer references users(id),
+    title text not null
+);
+
+INSERT INTO projects (user_id, title) values ('1', 'SQL com Node.JS');
+
+SELECT projects.*, users.name FROM projects JOIN users ON projects.user_id = users.id;
