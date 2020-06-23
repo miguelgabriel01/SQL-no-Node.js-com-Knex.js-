@@ -3,7 +3,15 @@ const routes = require('./routes');//importa o arquivo de rotas para o servidor
 
 const app = express();
 
- app.use(routes);//a aplicação usa agora o arquivo de rotas
+app.use(express.json())//responsavel pela aplicação receber dados em formato json
+app.use(routes);//a aplicação usa agora o arquivo de rotas
+
+//configuração do midleware
+app.use(( error,req,res,next) => {
+    res.status(error.status || 500)//error 500( erro interno do servidor )
+    res.json({ error: error.message})
+})
+
 
 const PORT = 3333;//constante onde informamos qual porta a apliacação usará
 app.listen(PORT, () => {
