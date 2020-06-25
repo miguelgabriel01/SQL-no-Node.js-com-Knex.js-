@@ -4,6 +4,7 @@ const knex = require('../database');//importa o arquivo de configuração do ban
 module.exports = {
 
  //rota responsavel por listar todos os projetos cadastrados
+ //desta maneira, o usuario pode visualizar todos os projetos, mas tmb pode visualizar projetos de usuarios especificos
  async index( req,res,next ){
    try {
        const { user_id } = req.query;//recebo o id do usuario como paramentro
@@ -11,11 +12,14 @@ module.exports = {
        const query = knex('projects')//tabela de projetos
 
        if(user_id){
-           query.where({ user_id })//se eistir um projeto com o id informado..
+           query
+           .where({ user_id })//se existir um projeto com o id informado..
+           .join('users','users.id','=','projects.user_id')
+           .select('projects.*','users.username')//todos os dados sobre o projeto, alem do nome do usuario responsavel por ele
        }
 
        const results = await query
-       
+
        return res.json(results)//retorna um json com os projetos
 
    } catch ( error ) {
