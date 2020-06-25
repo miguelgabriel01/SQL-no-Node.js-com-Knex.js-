@@ -6,6 +6,13 @@ const app = express();
 app.use(express.json())//responsavel pela aplicação receber dados em formato json
 app.use(routes);//a aplicação usa agora o arquivo de rotas
 
+//copnfigurações caso a rota informada não exista
+app.use(( req,res,next ) => {
+    const error = new Error('not found. Rota inexistente')//404( não encontrado )
+    error.status = 404
+    next(error)
+})
+
 //configuração do midleware
 app.use(( error,req,res,next) => {
     res.status(error.status || 500)//error 500( erro interno do servidor )

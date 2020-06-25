@@ -1,15 +1,30 @@
-//Controle de usuarios
+//Controle de projetos
 const knex = require('../database');//importa o arquivo de configuração do banco
 
 module.exports = {
 
- //rota responsavel por listar todos os usuarios cadastrados
- async index( req,res ) {
-     const result = await knex('users')
+ //rota responsavel por listar todos os projetos cadastrados
+ async index( req,res,next ){
+   try {
+       const { user_id } = req.query;//recebo o id do usuario como paramentro
+       
+       const query = knex('projects')//tabela de projetos
 
-     return res.json(result)//retorna um json com as informações dos usuarios
- },
- 
+       if(user_id){
+           query.where({ user_id })//se eistir um projeto com o id informado..
+       }
+
+       const results = await query
+       
+       return res.json(results)//retorna um json com os projetos
+
+   } catch ( error ) {
+       next( error )//msg de erro
+ }
+}
+
+
+ /*
  //rota que cadastra um novo usuario
  async create( req,res,next ) {
      try{
@@ -53,5 +68,5 @@ module.exports = {
          next( error )//se algo errado acontecer, será informado
      }
  }
-
+*/
 }
