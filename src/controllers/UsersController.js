@@ -6,7 +6,9 @@ module.exports = {
  //rota responsavel por listar todos os usuarios cadastrados
  async index( req,res ) {
      const result = await knex('users')
-
+     //listar apenas os usuarios que não possuem o campo de delete
+     .where('deleted_at', null)
+     
      return res.json(result)//retorna um json com as informações dos usuarios
  },
  
@@ -47,7 +49,10 @@ module.exports = {
 
          await knex('users')//na tabela usuarios ele apaga o registro com o ID informado
          .where({ id })
-         .del()
+         //não vamos mais deletar. vamos informar que o usuario esta nulo
+         .update('deleted_at', new Date())//atualizamos a informação no BD
+
+         //.del()
          return res.send()//envia a resposta
      }catch( error ){
          next( error )//se algo errado acontecer, será informado

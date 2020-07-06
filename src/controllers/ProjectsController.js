@@ -21,7 +21,8 @@ module.exports = {
            .where({ user_id })//se existir um projeto com o id informado..
            .join('users','users.id','=','projects.user_id')
            .select('projects.*','users.username')//todos os dados sobre o projeto, alem do nome do usuario responsavel por ele
-
+           .where('users.deleted_at', null)//responsavel por n listar projetos de usuarios deletados
+           
            countOBJ
            .where({ user_id })//mostra apenas o numero de projetos de determinado usuario
        }
