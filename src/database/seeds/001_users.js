@@ -9,7 +9,9 @@ exports.seed = function(knex) {
         {username: 'Miguel israel'},//dadosque vão ser inseridos na tabela 'users' e no campo 'username'
         {username: 'Ryan hudson'},//dadosque vão ser inseridos na tabela 'users' e no campo 'username'
         {username: 'Luis andre'},//dadosque vão ser inseridos na tabela 'users' e no campo 'username'
-        {username: 'João gabriel'}//dadosque vão ser inseridos na tabela 'users' e no campo 'username'
+        {username: 'João gabriel'},//dadosque vão ser inseridos na tabela 'users' e no campo 'username'
+        {username: 'gabriel santos'},//dadosque vão ser inseridos na tabela 'users' e no campo 'username'
+        {username: 'miguel miguel'}//dadosque vão ser inseridos na tabela 'users' e no campo 'username'
 
       ]);
     });

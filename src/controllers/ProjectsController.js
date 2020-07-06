@@ -7,16 +7,23 @@ module.exports = {
  //desta maneira, o usuario pode visualizar todos os projetos, mas tmb pode visualizar projetos de usuarios especificos
  async index( req,res,next ){
    try {
-       const { user_id } = req.query;//recebo o id do usuario como paramentro
+       const { user_id ,page = 1} = req.query;//recebo o id do usuario como paramentro
        
        const query = knex('projects')//tabela de projetos
-
+       .limit(5)//limite de 5 projetos por paginação
+       .offset(( page -1 ) * 5)//de 5 em 5 projetos
+        
        if(user_id){
            query
            .where({ user_id })//se existir um projeto com o id informado..
            .join('users','users.id','=','projects.user_id')
            .select('projects.*','users.username')//todos os dados sobre o projeto, alem do nome do usuario responsavel por ele
        }
+
+       //responsavel por informar quantos projetos estão cadastrados
+       const [ count ] = await knex('projects').count()
+       console.log("total de projetos cadastrados: ")
+       console.log(count)//exibi o numero de projetos cadastrados
 
        const results = await query
 
@@ -25,52 +32,24 @@ module.exports = {
    } catch ( error ) {
        next( error )//msg de erro
  }
-}
+ 
+},
 
-
- /*
- //rota que cadastra um novo usuario
- async create( req,res,next ) {
-     try{
-         const { username } = req.body//recebe do corṕo da aplicação o dado
-           await knex('users').insert( {username} )//insere no banco os dados salvos na constante que são recebidos pelo BODY
-
-          return res.status(201).send()//status de criado
-        }catch( error){
-         next(error);//caso algum erro, informa na apliacação
-        }
-    },
-
- //rota que atualiza usuario cadastrados
- async update( req,res,next ){
+//criar projetos
+ async create( req,res,next ){
      try {
-         const { username } = req.body//salva em uma constante os dados recebidos dpo corpo da requisição
-         const { id } = req.params//recebe o id do usuario como parametro
+         const { title,user_id } = req.body//recebemos e guardamos em uma const o titulo do projeto e o id do usuario que esta cadastrando
 
-         await knex('users')
-         .update({ username })
-         .where({ id })
-         //atualiza o nome do usuario no qual o id foi informado pelo header( cabeçalho )
+         //na tabela projects inserimos os dados
+         await knex('projects').insert({
+             title,
+             user_id
+         })
 
-         return res.send()//retornamos o resultado
-
-     } catch( error ) {
-         next( error )//caso exista um erro no processo de atualiação, uma msg será informada
-     }
- },
-
- //rota para apagar dados de um usuario
- async delete( req,res,next ){
-     try{
-         const { id } = req.params//recebe o id de um usuario como parametro
-
-         await knex('users')//na tabela usuarios ele apaga o registro com o ID informado
-         .where({ id })
-         .del()
-         return res.send()//envia a resposta
-     }catch( error ){
-         next( error )//se algo errado acontecer, será informado
+         return res.status(201).send()
+     } catch ( error ) {
+         next( error )
      }
  }
-*/
+
 }

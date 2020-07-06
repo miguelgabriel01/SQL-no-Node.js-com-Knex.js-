@@ -7,7 +7,7 @@ module.exports = {
     connection: {
       database:"knex_test",//nome do banco
       user:"postgres",//uduario responsavel pelo banco
-      password:"miguelgabriel123"//senha
+      password:"gabriel"//senha
     },
     migrations:{
       tableName: "knex_migrations",

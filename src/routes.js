@@ -13,7 +13,7 @@ routes.delete('/users/:id', UsersController.delete)//rota responsavel por deleta
 
 //rotas sobre projeto
 routes.get('/projects', ProjectsController.index)//rota responsavel por listar os projetos
-
+routes.post('/projects', ProjectsController.create)//rota responsavel por criar os projetos
 
 
 module.exports = routes;//exporta o arquivo de rotas
