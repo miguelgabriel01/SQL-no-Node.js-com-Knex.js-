@@ -13,17 +13,21 @@ module.exports = {
        .limit(5)//limite de 5 projetos por paginação
        .offset(( page -1 ) * 5)//de 5 em 5 projetos
         
+        //responsavel por informar quantos projetos estão cadastrados
+        const countOBJ = knex('projects').count()
+
        if(user_id){
            query
            .where({ user_id })//se existir um projeto com o id informado..
            .join('users','users.id','=','projects.user_id')
            .select('projects.*','users.username')//todos os dados sobre o projeto, alem do nome do usuario responsavel por ele
+
+           countOBJ
+           .where({ user_id })//mostra apenas o numero de projetos de determinado usuario
        }
 
-       //responsavel por informar quantos projetos estão cadastrados
-       const [ count ] = await knex('projects').count()
-       console.log("total de projetos cadastrados: ")
-       console.log(count)//exibi o numero de projetos cadastrados
+        const [count] = await countOBJ
+       res.header('X-Total-Count',count["count"])//exibi o numero de projetos cadastrados
 
        const results = await query
 
