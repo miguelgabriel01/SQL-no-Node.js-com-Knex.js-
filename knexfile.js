@@ -16,5 +16,13 @@ module.exports = {
     seeds:{
       directory: `${__dirname}/src/database/seeds`//informo onde os arquivos de seed sejam instalados
     }
-  }
+  },
+
+  onUpdateTrigger: table => `
+  CREATE TRIGGER ${table}_update_at
+  BEFORE UPDATE ON ${table}
+  FOR EACH ROW
+  EXECUTE PROCEDURE on_update_timestamp();
+  `
+
 }

@@ -1,4 +1,6 @@
-exports.up = knex=> knex.schema.createTable('projects', table =>{//cria uma tabela
+const { onUpdateTrigger } = require('../../../knexfile')
+
+exports.up = async knex=> knex.schema.createTable('projects', table =>{//cria uma tabela
     table.increments('id')//o primeiro registro se inicia com o valor de 1. os proximos vão iniciar com um incremento(1,2,3,4,5..)
     table.text('title')//Titulo do projeto que pode ser ou não inserido
 
@@ -9,9 +11,9 @@ exports.up = knex=> knex.schema.createTable('projects', table =>{//cria uma tabe
     .onDelete('CASCADE')//se um usuario é excluido, todos os projetos que ele cadastrou tambem seram apagados dos registros
 
     table.timestamps( true, true )//outra forma de salvar a data e a hora em que um dado foi inserido em um banco de dados
-}) 
+}).then(() => knex.raw(onUpdateTrigger('projects')));
 
 //se uma tabela com esse nome já estiver criada no banco de dados informado. esta função vai apagar os registros da tabela e reescrever os dados
-exports.down = knex => knex.schema.dropTable('projects')
+exports.down = async knex => knex.schema.dropTable('projects')
 
  
